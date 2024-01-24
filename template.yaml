@@ -1,0 +1,36 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 900
+    MemorySize: 10240
+    Handler: bootstrap
+    Runtime: provided.al2023
+    Tracing: Active # https://docs.aws.amazon.com/lambda/latest/dg/lambda-x-ray.html
+    Architectures:
+      - arm64
+
+Resources:
+  backup:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/lambda/backup/
+    Metadata:
+      BuildMethod: makefile
+
+  restore:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: src/lambda/restore/
+    Metadata:
+      BuildMethod: makefile
+
+Outputs:
+  BackupFunction:
+    Description: "Corso Backup Lambda Function ARN"
+    Value: !GetAtt backup.Arn
+  RestoreFunction:
+    Description: "Corso Restore Lambda Function ARN"
+    Value: !GetAtt restore.Arn

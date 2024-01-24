@@ -17,6 +17,7 @@ testlog/
 # IDE
 .vscode
 *.swp
+**/.idea
 
 # Standard configuration file names
 .corso_test.toml
@@ -29,3 +30,6 @@ testlog/
 /bin
 /docker/bin
 /website/dist
+
+# AWS SAM
+**/.aws-sam
